@@ -33,6 +33,7 @@ class CoursesPage extends React.Component {
       <div>
         {this.state.redirectToAddCoursePage && <Redirect to="/course" />}
         <h2>Courses</h2>
+
         <button
           style={{ marginBottom: 20 }}
           className="btn btn-primary add-course"
@@ -40,6 +41,7 @@ class CoursesPage extends React.Component {
         >
           Add Course
         </button>
+
         <CourseList courses={this.props.courses} />
       </div>
     );

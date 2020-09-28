@@ -6,11 +6,11 @@ export function loadCourseSuccess(courses) {
 }
 
 export function createCourseSuccess(course) {
-  return { type: types.CREATE_COURSES_SUCCESS, course };
+  return { type: types.CREATE_COURSE_SUCCESS, course };
 }
 
 export function updateCourseSuccess(course) {
-  return { type: types.UPDATE_COURSES_SUCCESS, course };
+  return { type: types.UPDATE_COURSE_SUCCESS, course };
 }
 
 export function loadCourses() {
@@ -26,8 +26,9 @@ export function loadCourses() {
   };
 }
 
-export function saveCourses(course) {
-  return function(dispatch) {
+export function saveCourse(course) {
+  //eslint-disable-next-line no-unused-vars
+  return function(dispatch, getState) {
     return courseApi
       .saveCourse(course)
       .then((savedCourse) => {
