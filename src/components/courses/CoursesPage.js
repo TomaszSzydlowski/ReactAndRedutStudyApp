@@ -18,23 +18,29 @@ class CoursesPage extends React.Component {
     const { courses, authors, actions } = this.props;
 
     if (courses.length === 0) {
-      actions.loadCourses().catch((error) => {
+      try {
+        actions.loadCourses();
+      } catch (error) {
         alert('Loading courses failed' + error);
-      });
+      }
     }
 
     if (authors.length === 0) {
-      actions.loadAuthors().catch((error) => {
+      try {
+        actions.loadAuthors();
+      } catch (error) {
         alert('Loading authors failed' + error);
-      });
+      }
     }
   }
 
-  handleDeleteCourse = (course) => {
+  handleDeleteCourse = async (course) => {
     toast.success('Course deleted');
-    this.props.actions.deleteCourse(course).catch((error) => {
+    try {
+      await this.props.actions.deleteCourse(course);
+    } catch (error) {
       toast.error('Delete failed.' + error.message, { autoClose: false });
-    });
+    }
   };
 
   render() {

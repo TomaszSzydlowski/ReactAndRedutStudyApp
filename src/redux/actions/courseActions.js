@@ -19,33 +19,31 @@ export function deleteCourseOptimistic(course) {
 }
 
 export function loadCourses() {
-  return function(dispatch) {
+  return async function(dispatch) {
     dispatch(beginApiCall());
-    return courseApi
-      .getCourses()
-      .then((courses) => {
-        dispatch(loadCourseSuccess(courses));
-      })
-      .catch((error) => {
-        dispatch(apiCallError(error));
-        throw error;
-      });
+    try {
+      const coursesResponse = await courseApi.getCourses();
+      dispatch(loadCourseSuccess(coursesResponse));
+    } catch (error) {
+      dispatch(apiCallError(error));
+      throw error;
+    }
   };
 }
 
 export function saveCourse(course) {
   //eslint-disable-next-line no-unused-vars
-  return function(dispatch, getState) {
+  return async function(dispatch, getState) {
     dispatch(beginApiCall());
-    return courseApi
-      .saveCourse(course)
-      .then((savedCourse) => {
-        course.id ? dispatch(updateCourseSuccess(savedCourse)) : dispatch(createCourseSuccess(savedCourse));
-      })
-      .catch((error) => {
-        dispatch(apiCallError(error));
-        throw error;
-      });
+    try {
+      const savedCourseResponse = await courseApi.saveCourse(course);
+      course.id
+        ? dispatch(updateCourseSuccess(savedCourseResponse))
+        : dispatch(createCourseSuccess(savedCourseResponse));
+    } catch (error) {
+      dispatch(apiCallError(error));
+      throw error;
+    }
   };
 }
 

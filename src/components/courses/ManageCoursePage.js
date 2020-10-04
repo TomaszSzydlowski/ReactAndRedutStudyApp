@@ -16,17 +16,21 @@ function ManageCoursePage({ courses, authors, loadAuthors, loadCourses, saveCour
   useEffect(
     () => {
       if (courses.length === 0) {
-        loadCourses().catch((error) => {
+        try {
+          loadCourses();
+        } catch (error) {
           alert('Loading courses failed' + error);
-        });
+        }
       } else {
         setCourse({ ...props.course });
       }
 
       if (authors.length === 0) {
-        loadAuthors().catch((error) => {
+        try {
+          loadAuthors();
+        } catch (error) {
           alert('Loading authors failed' + error);
-        });
+        }
       }
     },
     [ props.course ]
@@ -53,19 +57,19 @@ function ManageCoursePage({ courses, authors, loadAuthors, loadCourses, saveCour
     return Object.keys(errors).length === 0;
   }
 
-  function handleSave(event) {
+  async function handleSave(event) {
     event.preventDefault();
     if (!formIsValid()) return;
     setSaving(true);
-    saveCourse(course)
-      .then(() => {
-        toast.success('Course saved.');
-        history.push('/courses');
-      })
-      .catch((error) => {
-        setSaving(false);
-        setErrors({ onSave: error.message });
-      });
+
+    try {
+      await saveCourse(course);
+      toast.success('Course saved.');
+      history.push('/courses');
+    } catch (error) {
+      setSaving(false);
+      setErrors({ onSave: error.message });
+    }
   }
 
   return authors.length === 0 || courses.length === 0 ? (
